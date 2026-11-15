@@ -28,7 +28,7 @@ selfKnowledge/
 ├── package.json
 ├── astro.config.mjs              # 網站設定（側邊欄、網址前綴、外掛）
 ├── scripts/check-links.mjs       # 建置後檢查相對連結
-├── .github/workflows/deploy.yml  # 建置並發布到 GitHub Pages（尚未建立，見「部署」）
+├── .github/workflows/deploy.yml  # 建置並發布到 GitHub Pages
 ├── public/                       # 原樣輸出的靜態檔案（favicon）
 ├── src/
 │   ├── content.config.ts         # frontmatter 欄位定義（schema）
@@ -142,13 +142,16 @@ npm run build      # 建置到 dist/ 並驗證欄位與連結
 npm run preview    # 預覽建置結果
 ```
 
+因為設定了路徑前綴，本機預覽的網址是 `http://localhost:4321/selfKnowledge/`，不是根目錄。
+
 改動網站本身（版面、設定、schema）與改動知識內容是兩件事：前者照一般程式開發流程，不需要大綱審核；但改 schema 欄位時要同步更新 `rules.md` 與本檔的內容模型。新增相依套件或外掛前先問使用者。
 
 ### 部署
 
-發布到 GitHub Pages，由 `.github/workflows/deploy.yml` 在推送到主分支時自動建置並發布。
+發布到 GitHub Pages，網址是 `https://john92803.github.io/selfKnowledge/`。由 `.github/workflows/deploy.yml` 在推送到 `main` 時自動建置並發布；它執行的是 `npm run build`，所以欄位驗證或連結檢查失敗就不會部署。
 
-- 網址是 `https://<帳號>.github.io/<存放庫名>/`，所以 `astro.config.mjs` 要設定 `site` 與 `base`。少了 `base`，上線後樣式與連結都會找不到。
+- `astro.config.mjs` 的 `site` 與 `base` 對應這個網址。`github.io` 前面固定是帳號名稱、路徑固定是存放庫名稱，兩者都不能自選；存放庫改名時 `base` 要跟著改，否則上線後樣式與連結都會找不到。
+- GitHub 端要把存放庫 Settings → Pages 的 Source 設為 GitHub Actions，workflow 才能部署。
 - 推送就等於公開發布。未經使用者要求不要 commit 或 push；第一次啟用 GitHub Pages、或變更存放庫的公開狀態前，先向使用者確認。
 - GitHub 免費帳號只有公開存放庫能使用 Pages，這代表知識庫的 Markdown 原始檔也是公開的。
 
@@ -161,6 +164,6 @@ npm run preview    # 預覽建置結果
 3. 撰寫 `rules.md`：專案簡介、目錄與索引的用法、欄位定義、條目範本、索引列格式、連結寫法、大綱格式、新增與修改流程。內容以本檔為依據展開，寫到 agent 只讀它就能正確新增或修改。
 4. 建立根索引與 `repos/index.md`（初始為空表）。
 5. 確認 `npm run build` 通過，並實際開啟本機網站看過頁面。
-6. 部署設定（`deploy.yml`、`site`、`base`）等使用者提供 GitHub 帳號與存放庫名稱後再加。
+6. 加入部署設定（`deploy.yml`、`site`、`base`），做法見「部署」一節。
 
 腳手架產出的實際路徑或指令若與本檔不同，以實際為準並更新本檔。

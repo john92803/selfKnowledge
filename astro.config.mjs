@@ -5,6 +5,9 @@ import starlightLinksValidator from 'starlight-links-validator';
 
 // https://astro.build/config
 export default defineConfig({
+	// 網站發布在 https://john92803.github.io/selfKnowledge/，所以要設定網址與路徑前綴。
+	site: 'https://john92803.github.io',
+	base: '/selfKnowledge/',
 	// 內容中的相對連結以「網址結尾有 /」為前提，所以固定要求結尾斜線。
 	trailingSlash: 'always',
 	integrations: [
